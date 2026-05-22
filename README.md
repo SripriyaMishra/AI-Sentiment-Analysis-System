@@ -30,13 +30,19 @@ An AI-powered Sentiment Analysis web application developed using Machine Learnin
 ## How to Run
 
 ```bash
+python -m venv venv
+venv\Scripts\activate
+
 pip install -r requirements.txt
+
 python train_model.py
 python app.py
 ```
 
 Open:
+```bash
 http://127.0.0.1:5000
+```
 
 ## Project Type
 Task-1 Data Science Project under Pinnacle Labs Internship

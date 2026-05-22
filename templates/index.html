@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SentiAI — AI-Powered Sentiment Analysis</title>
+  <meta name="description" content="Analyze text sentiment using Machine Learning and NLP. Classify emotions as positive, negative, or neutral with confidence scores." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN (utility classes only, not used for core layout) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+  <!-- Favicon emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+</head>
+<body>
+
+<!-- ══ Animated Background ══════════════════════════════════ -->
+<div id="bg-canvas"></div>
+<div class="glow-ring"></div>
+<div id="particles-js"></div>
+
+<!-- Floating gradient blobs -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- ══ Navbar ════════════════════════════════════════════════ -->
+<nav class="navbar" aria-label="Main Navigation">
+  <a href="#" class="nav-brand">
+    <span class="brand-icon" aria-hidden="true">🧠</span>
+    <span>SentiAI</span>
+  </a>
+
+  <ul class="nav-links" role="list">
+    <li><a href="#analyzer-section">Analyzer</a></li>
+    <li><a href="#how-section">How It Works</a></li>
+    <li><a href="#tech-section">Tech Stack</a></li>
+    <li><a href="#analyzer-section" class="nav-cta">Try Now →</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO SECTION ══════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+
+    <!-- Badge -->
+    <div class="hero-badge" aria-label="Status indicator">
+      <span class="badge-dot"></span>
+      ML &amp; NLP Powered · Real-time Analysis
+    </div>
+
+    <!-- Title -->
+    <h1 class="hero-title">
+      AI-Powered<br />
+      <span class="gradient-text">Sentiment Analysis</span><br />
+      System
+    </h1>
+
+    <!-- Typing subtitle -->
+    <p class="hero-subtitle">
+      <span id="typed-text"></span><span class="type-cursor" aria-hidden="true"></span>
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="hero-actions">
+      <a href="#analyzer-section" class="btn btn-primary">
+        <span class="btn-glow"></span>
+        ✨ Analyze Now
+      </a>
+      <a href="#how-section" class="btn btn-secondary">
+        Learn More ↓
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="hero-stats" aria-label="Project statistics">
+      <div class="stat-card">
+        <div class="stat-value" data-count="95" data-suffix="%">0%</div>
+        <div class="stat-label">Model Accuracy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" data-count="3">0</div>
+        <div class="stat-label">Sentiment Classes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" data-count="10000">0</div>
+        <div class="stat-label">TF-IDF Features</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">&lt;100<span style="font-size:1rem">ms</span></div>
+        <div class="stat-label">Response Time</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ SENTIMENT ANALYZER SECTION ════════════════════════════ -->
+<section class="analyzer-section" id="analyzer-section" aria-labelledby="analyzer-heading">
+
+  <div class="section-header reveal">
+    <p class="section-tag">🔬 Live Demo</p>
+    <h2 class="section-title" id="analyzer-heading">
+      Try the <span style="background:linear-gradient(135deg,#0ea5e9,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Analyzer</span>
+    </h2>
+    <p class="section-sub">Paste any text — a review, tweet, or feedback — and get instant sentiment classification.</p>
+  </div>
+
+  <!-- Sample text chips -->
+  <div class="flex flex-wrap gap-2 justify-center mb-6 reveal">
+    <span style="font-size:.8rem;font-weight:600;color:#64748b;align-self:center;">Try a sample:</span>
+    <button class="tech-pill" style="cursor:pointer;"
+      data-sample="I absolutely love this product! The quality is outstanding and it exceeded all my expectations. Highly recommend it to everyone!">
+      😊 Positive
+    </button>
+    <button class="tech-pill" style="cursor:pointer;"
+      data-sample="This was a terrible experience. The product broke within a day and customer service refused to help me. Complete waste of money!">
+      😔 Negative
+    </button>
+    <button class="tech-pill" style="cursor:pointer;"
+      data-sample="I received the product today. It looks like the photos and seems to function as described. Nothing particularly special to note.">
+      😐 Neutral
+    </button>
+  </div>
+
+  <!-- Analyzer Card -->
+  <div class="analyzer-card reveal">
+
+    <form id="analyzer-form" novalidate>
+
+      <!-- Textarea -->
+      <div class="textarea-wrapper">
+        <label class="textarea-label" for="text-input">
+          <span>✏️</span>
+          <span>Enter text to analyze</span>
+        </label>
+        <textarea
+          id="text-input"
+          name="text"
+          placeholder="Type or paste your text here… e.g. 'This product is absolutely fantastic!'"
+          aria-label="Text to analyze for sentiment"
+          maxlength="5000"
+        ></textarea>
+        <span class="char-counter" id="char-count" aria-live="polite">0 / 5000</span>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <span class="toolbar-info" id="word-count-info" aria-live="polite">0 words</span>
+        <div class="toolbar-actions">
+          <button type="button" class="btn-clear" id="clear-btn" aria-label="Clear text">
+            🗑 Clear
+          </button>
+          <button type="submit" class="btn-analyze" id="analyze-btn">
+            <span>🔍 Analyze Sentiment</span>
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- Loading Indicator -->
+    <div class="loading-wrapper" id="loading-wrapper" aria-live="polite" aria-label="Analyzing text">
+      <div class="loader-ring"></div>
+      <p class="loading-text">Analyzing sentiment…</p>
+    </div>
+
+    <!-- Result Display -->
+    <div id="result-wrapper" aria-live="polite">
+      <div class="result-card" id="result-card">
+
+        <!-- Top Row -->
+        <div class="result-top">
+          <div class="result-emoji" id="result-emoji" role="img" aria-label="Sentiment emoji">😊</div>
+          <div class="result-label-wrap">
+            <div class="result-label" id="result-label">Positive</div>
+            <div class="result-message" id="result-message">The text conveys a positive sentiment.</div>
+          </div>
+          <div class="confidence-badge" id="confidence-val" aria-label="Confidence score">92.5%</div>
+        </div>
+
+        <!-- Confidence progress bar -->
+        <div class="progress-section">
+          <div class="progress-label">
+            <span>Confidence Score</span>
+            <span id="progress-pct">92.5%</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+        </div>
+
+        <!-- Probability breakdown -->
+        <div class="breakdown-section">
+          <div class="breakdown-item">
+            <div class="breakdown-val" id="bd-positive" style="color:#22c55e">—</div>
+            <div class="breakdown-key">😊 Positive</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-val" id="bd-neutral"  style="color:#f59e0b">—</div>
+            <div class="breakdown-key">😐 Neutral</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-val" id="bd-negative" style="color:#ef4444">—</div>
+            <div class="breakdown-key">😔 Negative</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Error Banner -->
+    <div class="error-banner" id="error-banner" role="alert" aria-live="assertive">
+      <span>⚠️</span>
+      <span id="error-msg">Something went wrong. Please try again.</span>
+    </div>
+
+  </div><!-- /analyzer-card -->
+
+</section>
+
+<!-- ══ HOW IT WORKS ═══════════════════════════════════════════ -->
+<section class="how-section" id="how-section" aria-labelledby="how-heading">
+
+  <div class="section-header reveal">
+    <p class="section-tag">⚙️ Pipeline</p>
+    <h2 class="section-title" id="how-heading">How It Works</h2>
+    <p class="section-sub">A complete NLP pipeline from raw text to sentiment prediction.</p>
+  </div>
+
+  <div class="steps-grid">
+
+    <div class="step-card reveal">
+      <span class="step-number">01</span>
+      <div class="step-icon sky">🧹</div>
+      <h3 class="step-title">Text Preprocessing</h3>
+      <p class="step-desc">Raw text is cleaned — URLs, HTML, and special characters are stripped. Stopwords are removed while keeping negation words.</p>
+    </div>
+
+    <div class="step-card reveal">
+      <span class="step-number">02</span>
+      <div class="step-icon lavender">🔤</div>
+      <h3 class="step-title">Lemmatisation</h3>
+      <p class="step-desc">Words are reduced to their base form using NLTK's WordNet Lemmatizer, improving feature generalisation.</p>
+    </div>
+
+    <div class="step-card reveal">
+      <span class="step-number">03</span>
+      <div class="step-icon blue">📊</div>
+      <h3 class="step-title">TF-IDF Vectorisation</h3>
+      <p class="step-desc">Text is converted into numerical feature vectors using TF-IDF with up to 10 000 unigram + bigram features.</p>
+    </div>
+
+    <div class="step-card reveal">
+      <span class="step-number">04</span>
+      <div class="step-icon green">🤖</div>
+      <h3 class="step-title">Multinomial Naive Bayes</h3>
+      <p class="step-desc">A Multinomial Naive Bayes classifier analyzes word frequencies and predicts sentiment probabilities efficiently.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ══ TECH STACK ═════════════════════════════════════════════ -->
+<section class="tech-section" id="tech-section" aria-labelledby="tech-heading">
+
+  <div class="section-header reveal">
+    <p class="section-tag">🛠 Stack</p>
+    <h2 class="section-title" id="tech-heading">Tech Stack</h2>
+    <p class="section-sub">Built with industry-standard open-source tools for data science.</p>
+  </div>
+
+  <div class="tech-grid reveal">
+    <span class="tech-pill"><span class="tech-icon">🐍</span> Python 3</span>
+    <span class="tech-pill"><span class="tech-icon">⚗️</span> Flask</span>
+    <span class="tech-pill"><span class="tech-icon">🔬</span> scikit-learn</span>
+    <span class="tech-pill"><span class="tech-icon">📜</span> NLTK</span>
+    <span class="tech-pill"><span class="tech-icon">🐼</span> Pandas</span>
+    <span class="tech-pill"><span class="tech-icon">🔢</span> NumPy</span>
+    <span class="tech-pill"><span class="tech-icon">📐</span> TF-IDF</span>
+    <span class="tech-pill"><span class="tech-icon">📈</span> Multinomial Naive Bayes</span>
+    <span class="tech-pill"><span class="tech-icon">🌐</span> HTML5 / CSS3</span>
+    <span class="tech-pill"><span class="tech-icon">💛</span> JavaScript ES6+</span>
+    <span class="tech-pill"><span class="tech-icon">🌬</span> Tailwind CSS</span>
+    <span class="tech-pill"><span class="tech-icon">✨</span> Particles.js</span>
+  </div>
+
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+<footer>
+  <p>Built with ❤️ using <strong>Python · Flask · scikit-learn · NLTK</strong> &nbsp;·&nbsp; Data Science Portfolio Project</p>
+  <p style="margin-top:0.35rem;opacity:0.65;font-size:0.78rem;">
+    Sentiment Analysis System · Machine Learning &amp; NLP
+  </p>
+</footer>
+
+<!-- ── Scripts ───────────────────────────────────────────── -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
